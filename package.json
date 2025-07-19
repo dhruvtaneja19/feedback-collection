@@ -1,0 +1,30 @@
+{
+  "name": "feedback-platform",
+  "version": "1.0.0",
+  "description": "Full-stack feedback collection platform with React, Node.js, OAuth, and MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "backend:dev": "cd backend && npm run dev",
+    "frontend:dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build && cd ../backend && npm run build",
+    "start": "cd backend && npm start",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "setup": "npm run install:all"
+  },
+  "keywords": [
+    "feedback",
+    "platform",
+    "react",
+    "vite",
+    "node",
+    "express",
+    "oauth",
+    "mongodb"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
