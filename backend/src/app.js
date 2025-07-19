@@ -51,6 +51,16 @@ app.use("/api/users", userRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/admin", adminRoutes);
 
+// Root route for testing
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Feedback Collection API is running",
+    timestamp: new Date().toISOString(),
+    routes: ["/api/auth", "/api/users", "/api/feedback", "/api/admin"]
+  });
+});
+
 // Health check endpoint
 app.get("/api/health", (req, res) => {
   res.status(200).json({
@@ -80,9 +90,12 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📱 Environment: ${process.env.NODE_ENV || "development"}`);
-});
+// Only listen when not in Vercel environment
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📱 Environment: ${process.env.NODE_ENV || "development"}`);
+  });
+}
 
 export default app;
