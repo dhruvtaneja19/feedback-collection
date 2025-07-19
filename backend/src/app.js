@@ -37,7 +37,10 @@ app.use("/api/", limiter);
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173", // Vite dev server
+  "https://feedback-collection-frontend.vercel.app", // Stable frontend URL
   "https://feedback-collection-1fzp.vercel.app",
+  "https://feedback-collection-1fzp-m8enz50jo-dhruv-tanejas-projects.vercel.app",
+  "https://feedback-collection-1fzp-fefhlkq7r-dhruv-tanejas-projects.vercel.app",
   "https://feedback-collection-1fzp-3fvossmga-dhruv-tanejas-projects.vercel.app",
   "https://feedback-collection-1fzp-nt4gdy9lu-dhruv-tanejas-projects.vercel.app",
   "https://feedback-collection-1fzp-2idvvz3fc-dhruv-tanejas-projects.vercel.app",
@@ -49,20 +52,23 @@ app.use(
     origin: function (origin, callback) {
       // Allow requests with no origin (mobile apps, curl, etc.)
       if (!origin) return callback(null, true);
-      
+
       // Check if origin matches allowed patterns
-      const isAllowed = allowedOrigins.includes(origin) || 
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
         // Allow any Vercel deployment URL for your projects
         /^https:\/\/feedback-collection-1fzp.*\.vercel\.app$/.test(origin) ||
         /^https:\/\/feedback-collection-t8g8.*\.vercel\.app$/.test(origin);
-      
+
       if (isAllowed) {
         return callback(null, true);
       } else {
         console.log(`🚫 CORS blocked origin: ${origin}`);
         console.log(`✅ Allowed origins:`, allowedOrigins);
-        console.log(`✅ Also allowing Vercel patterns: feedback-collection-1fzp*.vercel.app`);
-        return callback(new Error('Not allowed by CORS'));
+        console.log(
+          `✅ Also allowing Vercel patterns: feedback-collection-1fzp*.vercel.app`
+        );
+        return callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
@@ -85,7 +91,7 @@ app.get("/", (req, res) => {
     success: true,
     message: "Feedback Collection API is running",
     timestamp: new Date().toISOString(),
-    routes: ["/api/auth", "/api/users", "/api/feedback", "/api/admin"]
+    routes: ["/api/auth", "/api/users", "/api/feedback", "/api/admin"],
   });
 });
 
@@ -119,7 +125,7 @@ app.use((err, req, res, next) => {
 });
 
 // Only listen when not in Vercel environment
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📱 Environment: ${process.env.NODE_ENV || "development"}`);
