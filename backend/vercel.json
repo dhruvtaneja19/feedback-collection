@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "name": "feedback-collection-backend",
+  "builds": [
+    {
+      "src": "src/app.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "src/app.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "MONGODB_URI": "@mongodb_uri",
+    "JWT_SECRET": "@jwt_secret",
+    "CLIENT_URL": "@client_url"
+  }
+}
