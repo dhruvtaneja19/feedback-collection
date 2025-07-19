@@ -3,7 +3,7 @@ import axios from "axios";
 // Debug: Log the API URL being used
 const API_URL = import.meta.env.VITE_API_URL || 
   (import.meta.env.MODE === 'production' 
-    ? "https://feedback-collection-t8g8-8d7dpnwn1-dhruv-tanejas-projects.vercel.app" 
+    ? "https://feedback-collection-t8g8-nfs7yiyr6-dhruv-tanejas-projects.vercel.app" 
     : "http://localhost:5000");
 console.log("🔗 API URL:", API_URL);
 console.log("🔗 Environment:", import.meta.env.MODE);
