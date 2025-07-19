@@ -37,6 +37,9 @@ app.use("/api/", limiter);
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173", // Vite dev server
+  "https://feedback-collection-1fzp.vercel.app",
+  "https://feedback-collection-1fzp-3fvossmga-dhruv-tanejas-projects.vercel.app",
+  "https://feedback-collection-1fzp-nt4gdy9lu-dhruv-tanejas-projects.vercel.app",
   process.env.CLIENT_URL,
 ].filter(Boolean); // Remove undefined values
 
