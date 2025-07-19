@@ -40,6 +40,7 @@ const allowedOrigins = [
   "https://feedback-collection-1fzp.vercel.app",
   "https://feedback-collection-1fzp-3fvossmga-dhruv-tanejas-projects.vercel.app",
   "https://feedback-collection-1fzp-nt4gdy9lu-dhruv-tanejas-projects.vercel.app",
+  "https://feedback-collection-1fzp-2idvvz3fc-dhruv-tanejas-projects.vercel.app",
   process.env.CLIENT_URL,
 ].filter(Boolean); // Remove undefined values
 
@@ -49,11 +50,18 @@ app.use(
       // Allow requests with no origin (mobile apps, curl, etc.)
       if (!origin) return callback(null, true);
       
-      if (allowedOrigins.includes(origin)) {
+      // Check if origin matches allowed patterns
+      const isAllowed = allowedOrigins.includes(origin) || 
+        // Allow any Vercel deployment URL for your projects
+        /^https:\/\/feedback-collection-1fzp.*\.vercel\.app$/.test(origin) ||
+        /^https:\/\/feedback-collection-t8g8.*\.vercel\.app$/.test(origin);
+      
+      if (isAllowed) {
         return callback(null, true);
       } else {
         console.log(`🚫 CORS blocked origin: ${origin}`);
         console.log(`✅ Allowed origins:`, allowedOrigins);
+        console.log(`✅ Also allowing Vercel patterns: feedback-collection-1fzp*.vercel.app`);
         return callback(new Error('Not allowed by CORS'));
       }
     },
