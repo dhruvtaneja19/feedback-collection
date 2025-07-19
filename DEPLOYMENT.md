@@ -19,12 +19,20 @@
    - Framework Preset: **Other**
 
 2. **Backend Environment Variables:**
+   
+   In the Vercel project settings, add these environment variables:
    ```
-   NODE_ENV=production
-   MONGODB_URI=your_mongodb_atlas_connection_string
-   JWT_SECRET=your_super_secret_jwt_key_here
+   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/feedback-db
+   JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters
    CLIENT_URL=https://your-frontend-domain.vercel.app
+   NODE_ENV=production
    ```
+   
+   **Important:** 
+   - Go to your Vercel project → Settings → Environment Variables
+   - Add each variable manually in the Vercel dashboard
+   - Do NOT use quotes around the values
+   - Make sure to set them for "Production" environment
 
 3. **Deploy Backend**
    - Note the deployed backend URL (e.g., `https://feedback-backend-xyz.vercel.app`)
@@ -38,9 +46,16 @@
    - Framework Preset: **Vite**
 
 2. **Frontend Environment Variables:**
+   
+   In the Vercel project settings, add:
    ```
    VITE_API_URL=https://your-backend-domain.vercel.app
    ```
+   
+   **Important:**
+   - Add this in Vercel dashboard → Settings → Environment Variables
+   - Set for "Production" environment
+   - No quotes around the URL
 
 3. **Deploy Frontend**
 
@@ -52,6 +67,33 @@
 4. **Deploy frontend from root**
 
 ## Environment Variables Setup
+
+### How to Set Environment Variables in Vercel:
+
+1. **Go to your Vercel project dashboard**
+2. **Click on your project name**
+3. **Go to Settings tab**
+4. **Click on Environment Variables**
+5. **Add each variable:**
+   - Name: `MONGODB_URI`
+   - Value: `mongodb+srv://username:password@cluster.mongodb.net/feedback-db`
+   - Environment: `Production` (check the box)
+   - Click **Save**
+
+6. **Repeat for each variable below**
+
+### Backend Environment Variables (Set in Backend Project):
+```bash
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/feedback-db
+JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters-long
+CLIENT_URL=https://your-frontend-domain.vercel.app
+NODE_ENV=production
+```
+
+### Frontend Environment Variables (Set in Frontend Project):
+```bash
+VITE_API_URL=https://your-backend-domain.vercel.app
+```
 
 ### Backend (.env)
 ```bash
