@@ -34,9 +34,26 @@ const limiter = rateLimit({
 app.use("/api/", limiter);
 
 // CORS configuration
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173", // Vite dev server
+  process.env.CLIENT_URL,
+].filter(Boolean); // Remove undefined values
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: function (origin, callback) {
+      // Allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        console.log(`🚫 CORS blocked origin: ${origin}`);
+        console.log(`✅ Allowed origins:`, allowedOrigins);
+        return callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );
