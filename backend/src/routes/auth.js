@@ -1,8 +1,15 @@
 import express from "express";
 import { requireAuth, createSendToken } from "../middleware/auth.js";
 import User from "../models/User.js";
+import handleOptions from "./auth-options-handler.js";
 
 const router = express.Router();
+
+// Handle OPTIONS requests for all auth routes
+router.options("*", handleOptions);
+
+// Handle specific OPTIONS requests for login
+router.options("/login", handleOptions);
 
 // @route   POST /api/auth/register
 // @desc    Register new user

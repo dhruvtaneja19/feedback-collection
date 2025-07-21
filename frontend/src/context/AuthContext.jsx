@@ -1,9 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
-
-// Configure axios defaults
-axios.defaults.baseURL = "http://localhost:5000";
-axios.defaults.withCredentials = true;
+import api from "../utils/api";
+import { createApiUrl } from "../utils/corsProxy";
 
 const AuthContext = createContext();
 
@@ -20,13 +17,10 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem("token"));
 
-  // Set up axios interceptor for auth token
+  // Auth token is now handled in the api utility's interceptors
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    } else {
-      delete axios.defaults.headers.common["Authorization"];
-    }
+    // No need to set up interceptors here as they're handled in the api utility
+    console.log("Auth token updated:", token ? "Token exists" : "No token");
   }, [token]);
 
   // Check if user is logged in on mount
@@ -37,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     try {
       if (token) {
-        const response = await axios.get("/api/auth/me");
+        const response = await api.get("/api/auth/me");
         setUser(response.data.user);
       }
     } catch (error) {
@@ -50,7 +44,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post("/api/auth/login", { email, password });
+      console.log("Attempting login to:", createApiUrl("/api/auth/login"));
+      const response = await api.post("/api/auth/login", { email, password });
       const { token: newToken, user: userData } = response.data;
 
       setToken(newToken);
@@ -59,6 +54,7 @@ export const AuthProvider = ({ children }) => {
 
       return { success: true };
     } catch (error) {
+      console.error("Login error:", error);
       return {
         success: false,
         message: error.response?.data?.message || "Login failed",
@@ -68,7 +64,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post("/api/auth/register", userData);
+      const response = await api.post("/api/auth/register", userData);
       const { token: newToken, user: newUser } = response.data;
 
       setToken(newToken);
@@ -77,6 +73,7 @@ export const AuthProvider = ({ children }) => {
 
       return { success: true };
     } catch (error) {
+      console.error("Registration error:", error);
       return {
         success: false,
         message: error.response?.data?.message || "Registration failed",
@@ -88,15 +85,16 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     localStorage.removeItem("token");
-    delete axios.defaults.headers.common["Authorization"];
+    // Authorization headers are handled by the api utility
   };
 
   const updateProfile = async (profileData) => {
     try {
-      const response = await axios.put("/api/auth/profile", profileData);
+      const response = await api.put("/api/auth/profile", profileData);
       setUser(response.data.user);
       return { success: true };
     } catch (error) {
+      console.error("Profile update error:", error);
       return {
         success: false,
         message: error.response?.data?.message || "Profile update failed",

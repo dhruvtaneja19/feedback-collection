@@ -1,33 +1,62 @@
 import axios from "axios";
+import { createApiUrl, createCorsHeaders } from "./corsProxy";
 
-// Debug: Log the API URL being used
-const API_URL =
-  import.meta.env.VITE_API_URL ||
-  (import.meta.env.MODE === "production"
-    ? "https://feedback-collection-t8g8-nfs7yiyr6-dhruv-tanejas-projects.vercel.app"
-    : "http://localhost:5000");
-console.log("🔗 API URL:", API_URL);
-console.log("🔗 Environment:", import.meta.env.MODE);
-console.log("🔗 All env vars:", import.meta.env);
+// Safely access environment variables
+const getEnvVar = (key) => {
+  try {
+    return import.meta.env[key];
+  } catch (e) {
+    return undefined;
+  }
+};
 
-// Create an axios instance with default configuration
+// Determine if we're in development or production
+const isDev = getEnvVar("DEV") === true;
+
+// Safely log debug information
+try {
+  console.log("🔗 Environment:", isDev ? "development" : "production");
+} catch (e) {
+  console.log("Could not log environment information");
+}
+
+// Create an axios instance with default configuration and CORS handling
 const api = axios.create({
-  baseURL: API_URL,
+  // In development, the proxy is handled by Vite
+  // In production, we handle it with our custom solution
+  baseURL: isDev ? "" : "",
   headers: {
     "Content-Type": "application/json",
   },
+  // Allow credentials like cookies to be sent
+  withCredentials: true,
 });
 
-// Add a request interceptor to include auth token
+// Add a request interceptor to include auth token and handle CORS
 api.interceptors.request.use(
   (config) => {
+    // Add authentication token if available
     const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    // Add CORS headers
+    Object.assign(config.headers, createCorsHeaders());
+    
+    // Transform the URL to handle CORS issues
+    if (config.url) {
+      // Only transform non-absolute URLs
+      if (!config.url.startsWith('http')) {
+        config.url = createApiUrl(config.url);
+      }
+    }
+    
+    console.log(`🔄 Request to: ${config.url}`);
     return config;
   },
   (error) => {
+    console.error("❌ Request error:", error);
     return Promise.reject(error);
   }
 );

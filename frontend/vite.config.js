@@ -18,5 +18,13 @@ export default defineConfig({
   },
   build: {
     outDir: "dist",
+    rollupOptions: {
+      // Ensure proper handling of environment variables in production
+      external: [],
+    },
   },
+  define: {
+    // Provide fallback values for environment variables
+    __APP_ENV__: JSON.stringify(process.env.APP_ENV || 'production'),
+  }
 });

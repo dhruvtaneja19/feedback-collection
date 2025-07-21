@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import rateLimit from "express-rate-limit";
+import corsMiddleware from "./middleware/cors.js";
 
 // Import routes
 import authRoutes from "./routes/auth.js";
@@ -46,35 +47,18 @@ const allowedOrigins = [
   process.env.CLIENT_URL,
 ].filter(Boolean); // Remove undefined values
 
+// Use both built-in cors and our custom middleware for better handling
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (mobile apps, curl, etc.)
-      if (!origin) return callback(null, true);
-
-      // Check if origin matches allowed patterns
-      const isAllowed =
-        allowedOrigins.includes(origin) ||
-        // Allow any Vercel deployment URL for your projects
-        /^https:\/\/feedback-collection-1fzp.*\.vercel\.app$/.test(origin) ||
-        /^https:\/\/feedback-collection-t8g8.*\.vercel\.app$/.test(origin) ||
-        // Allow localhost with any port during development
-        /^http:\/\/localhost:(\d+)$/.test(origin);
-
-      if (isAllowed) {
-        return callback(null, true);
-      } else {
-        console.log(`🚫 CORS blocked origin: ${origin}`);
-        console.log(`✅ Allowed origins:`, allowedOrigins);
-        console.log(
-          `✅ Also allowing Vercel patterns and all localhost origins`
-        );
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: "*", // Allow all origins
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
   })
 );
+
+// Apply our custom CORS middleware for detailed logging and better preflight handling
+app.use(corsMiddleware);
 
 // Body parsing middleware
 app.use(express.json({ limit: "10mb" }));
