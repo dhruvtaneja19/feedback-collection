@@ -37,9 +37,8 @@ app.use("/api/", limiter);
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173", // Vite dev server
-  "https://feedback-collection-frontend.vercel.app", // Stable frontend URL
+  "http://localhost:5000",
   "https://feedback-collection-1fzp.vercel.app",
-  "https://feedback-collection-1fzp-m8enz50jo-dhruv-tanejas-projects.vercel.app",
   "https://feedback-collection-1fzp-fefhlkq7r-dhruv-tanejas-projects.vercel.app",
   "https://feedback-collection-1fzp-3fvossmga-dhruv-tanejas-projects.vercel.app",
   "https://feedback-collection-1fzp-nt4gdy9lu-dhruv-tanejas-projects.vercel.app",
@@ -58,7 +57,9 @@ app.use(
         allowedOrigins.includes(origin) ||
         // Allow any Vercel deployment URL for your projects
         /^https:\/\/feedback-collection-1fzp.*\.vercel\.app$/.test(origin) ||
-        /^https:\/\/feedback-collection-t8g8.*\.vercel\.app$/.test(origin);
+        /^https:\/\/feedback-collection-t8g8.*\.vercel\.app$/.test(origin) ||
+        // Allow localhost with any port during development
+        /^http:\/\/localhost:(\d+)$/.test(origin);
 
       if (isAllowed) {
         return callback(null, true);
@@ -66,7 +67,7 @@ app.use(
         console.log(`🚫 CORS blocked origin: ${origin}`);
         console.log(`✅ Allowed origins:`, allowedOrigins);
         console.log(
-          `✅ Also allowing Vercel patterns: feedback-collection-1fzp*.vercel.app`
+          `✅ Also allowing Vercel patterns and all localhost origins`
         );
         return callback(new Error("Not allowed by CORS"));
       }

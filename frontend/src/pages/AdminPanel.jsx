@@ -89,11 +89,20 @@ const AdminPanel = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
-        <p className="text-gray-600 mt-2">Manage users and feedback</p>
+    <div className="max-w-7xl mx-auto p-6">
+      {/* Enhanced Header */}
+      <div className="mb-8 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-8 text-white">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold mb-2">Admin Panel</h1>
+            <p className="text-blue-100 text-lg">
+              Manage users and feedback across the platform
+            </p>
+          </div>
+          <div className="bg-white/20 p-4 rounded-xl">
+            <Shield className="h-12 w-12 text-white" />
+          </div>
+        </div>
       </div>
 
       {/* Tab Navigation */}
@@ -123,39 +132,52 @@ const AdminPanel = () => {
       {/* Overview Tab */}
       {activeTab === "overview" && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 transition-transform hover:scale-105">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Users</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-500">Total Users</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">
                   {stats.users?.totalUsers || 0}
                 </p>
+                <p className="text-xs text-blue-600 mt-2">Platform wide</p>
               </div>
-              <Users className="h-8 w-8 text-blue-600" />
+              <div className="bg-blue-100 p-4 rounded-full">
+                <Users className="h-8 w-8 text-blue-600" />
+              </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 transition-transform hover:scale-105">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Total Feedback</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-500">
+                  Total Feedback
+                </p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">
                   {stats.feedback?.totalFeedback || 0}
                 </p>
+                <p className="text-xs text-green-600 mt-2">All submissions</p>
               </div>
-              <MessageSquare className="h-8 w-8 text-green-600" />
+              <div className="bg-green-100 p-4 rounded-full">
+                <MessageSquare className="h-8 w-8 text-green-600" />
+              </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 transition-transform hover:scale-105">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Active Users</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm font-medium text-gray-500">
+                  Active Users
+                </p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">
                   {stats.users?.activeUsers || 0}
                 </p>
+                <p className="text-xs text-amber-600 mt-2">Currently active</p>
               </div>
-              <Shield className="h-8 w-8 text-yellow-600" />
+              <div className="bg-amber-100 p-4 rounded-full">
+                <Shield className="h-8 w-8 text-amber-600" />
+              </div>
             </div>
           </div>
         </div>
