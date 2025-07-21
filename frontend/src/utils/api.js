@@ -20,16 +20,19 @@ try {
   console.log("Could not log environment information");
 }
 
+// Determine the API URL - in both cases, we'll use the proxy from Vite
+// In development, it proxies through to localhost:5000
+// In production, it proxies to the actual backend URL configured in vite.config.js
+const API_URL = '';  // Empty means use relative URLs which will go through Vite's proxy
+
 // Create an axios instance with default configuration and CORS handling
 const api = axios.create({
-  // In development, the proxy is handled by Vite
-  // In production, we handle it with our custom solution
-  baseURL: isDev ? "" : "",
+  baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },
-  // Allow credentials like cookies to be sent
-  withCredentials: true,
+  // Don't use credentials mode since we're using token auth
+  withCredentials: false,
 });
 
 // Add a request interceptor to include auth token and handle CORS
