@@ -33,10 +33,19 @@ const Dashboard = () => {
     try {
       setLoading(true);
       const response = await api.get("/api/feedback");
-      setFeedback(response.data.feedback);
-      setStats(response.data.stats);
+      console.log("📊 Feedback API response:", response.data);
+      
+      // Ensure feedback is always an array
+      const feedbackData = response.data.feedback || response.data || [];
+      const statsData = response.data.stats || {};
+      
+      setFeedback(Array.isArray(feedbackData) ? feedbackData : []);
+      setStats(statsData);
     } catch (error) {
       console.error("Failed to fetch feedback:", error);
+      // Set empty array on error to prevent filter issues
+      setFeedback([]);
+      setStats({});
     } finally {
       setLoading(false);
     }
@@ -79,7 +88,7 @@ const Dashboard = () => {
   };
 
   // Filter feedback based on selected filter
-  const filteredFeedback = feedback.filter((item) => {
+  const filteredFeedback = (feedback || []).filter((item) => {
     if (filterView === "unread") return !item.isRead;
     if (filterView === "read") return item.isRead;
     return true; // "all" filter
