@@ -4,14 +4,14 @@
 const corsMiddleware = (req, res, next) => {
   // Get the origin from request headers
   const origin = req.headers.origin;
-  
+
   // Set specific origin instead of wildcard for credentials mode
   if (origin) {
     res.header("Access-Control-Allow-Origin", origin);
   } else {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   }
-  
+
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
@@ -21,14 +21,14 @@ const corsMiddleware = (req, res, next) => {
 
   // Log request details for debugging
   console.log(`📝 CORS Request: ${req.method} ${req.url}`);
-  console.log(`📝 Origin: ${origin || 'No origin header'}`);
-  
+  console.log(`📝 Origin: ${origin || "No origin header"}`);
+
   // Handle preflight requests
   if (req.method === "OPTIONS") {
     console.log("✅ Handling OPTIONS preflight request");
     return res.status(200).end();
   }
-  
+
   next();
 };
 

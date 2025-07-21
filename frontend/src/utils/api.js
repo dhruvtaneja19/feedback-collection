@@ -23,7 +23,7 @@ try {
 // Determine the API URL - in both cases, we'll use the proxy from Vite
 // In development, it proxies through to localhost:5000
 // In production, it proxies to the actual backend URL configured in vite.config.js
-const API_URL = '';  // Empty means use relative URLs which will go through Vite's proxy
+const API_URL = ""; // Empty means use relative URLs which will go through Vite's proxy
 
 // Create an axios instance with default configuration and CORS handling
 const api = axios.create({
@@ -43,19 +43,27 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
-    // Add CORS headers
-    Object.assign(config.headers, createCorsHeaders());
-    
+
     // Transform the URL to handle CORS issues
     if (config.url) {
       // Only transform non-absolute URLs
-      if (!config.url.startsWith('http')) {
+      if (!config.url.startsWith("http")) {
         config.url = createApiUrl(config.url);
       }
     }
-    
-    console.log(`🔄 Request to: ${config.url}`);
+
+    // Add CORS headers based on the URL - special handling for auth endpoints
+    Object.assign(config.headers, createCorsHeaders(config.url));
+
+    // Debug info for auth endpoints
+    if (config.url?.includes("/auth/")) {
+      console.log(`🔐 Auth request to: ${config.url}`);
+      console.log("🔐 Auth request headers:", config.headers);
+      console.log("🔐 Auth request data:", config.data);
+    } else {
+      console.log(`🔄 Request to: ${config.url}`);
+    }
+
     return config;
   },
   (error) => {
@@ -66,8 +74,25 @@ api.interceptors.request.use(
 
 // Add a response interceptor to handle auth errors
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Debug info for auth responses
+    if (response.config.url?.includes("/auth/")) {
+      console.log(`🔐 Auth response status: ${response.status}`);
+      console.log("🔐 Auth response headers:", response.headers);
+      console.log("🔐 Auth response data:", response.data);
+    }
+    return response;
+  },
   (error) => {
+    // Log auth errors with more detail
+    if (error.config?.url?.includes("/auth/")) {
+      console.error(
+        "❌ Auth error:",
+        error.response?.status,
+        error.response?.data
+      );
+    }
+
     if (error.response?.status === 401) {
       // Token is invalid or expired
       localStorage.removeItem("token");

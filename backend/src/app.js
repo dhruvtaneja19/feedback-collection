@@ -50,17 +50,20 @@ const allowedOrigins = [
 // Use both built-in cors and our custom middleware for better handling
 app.use(
   cors({
-    origin: function(origin, callback) {
+    origin: function (origin, callback) {
       // Allow specific origins instead of wildcard
       const allowedOrigins = [
-        'http://localhost:3000',
-        'https://feedback-collection-1fzp-61jzczzm-dhruv-tanejas-projects.vercel.app'
+        "http://localhost:3000",
+        "https://feedback-collection-1fzp-61jzczzm-dhruv-tanejas-projects.vercel.app",
       ];
-      
+
       // For requests with no origin (like mobile apps or curl)
       if (!origin) return callback(null, true);
-      
-      if (allowedOrigins.indexOf(origin) !== -1 || origin.startsWith('http://localhost:')) {
+
+      if (
+        allowedOrigins.indexOf(origin) !== -1 ||
+        origin.startsWith("http://localhost:")
+      ) {
         callback(null, true);
       } else {
         console.log(`🚫 CORS rejected origin: ${origin}`);
@@ -69,7 +72,13 @@ app.use(
     },
     credentials: false,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
+    allowedHeaders: [
+      "Origin",
+      "X-Requested-With",
+      "Content-Type",
+      "Accept",
+      "Authorization",
+    ],
   })
 );
 

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import api from "../utils/api";
 import { createApiUrl } from "../utils/corsProxy";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -44,8 +45,33 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      console.log("Attempting login to:", createApiUrl("/api/auth/login"));
-      const response = await api.post("/api/auth/login", { email, password });
+      // Determine if we're in production or development
+      const isProd = import.meta.env.PROD || false;
+      const apiUrl = isProd
+        ? "https://feedback-collection-t8g8-dhruv-tanejas-projects.vercel.app"
+        : "";
+
+      console.log(
+        "Attempting login, environment:",
+        isProd ? "production" : "development"
+      );
+
+      // Create the complete URL for login
+      const loginUrl = isProd ? `${apiUrl}/api/auth/login` : "/api/auth/login";
+
+      console.log("Login URL:", loginUrl);
+
+      // Make the login request with appropriate config
+      const response = await axios({
+        method: "post",
+        url: loginUrl,
+        data: { email, password },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: false,
+      });
+
       const { token: newToken, user: userData } = response.data;
 
       setToken(newToken);
