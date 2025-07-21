@@ -50,27 +50,16 @@ export const createApiUrl = (endpoint) => {
 };
 
 /**
- * Creates headers with CORS support
- * @param {string} url - The URL of the request
- * @returns {Object} Headers object with CORS configuration
+ * Creates headers for API requests
+ * @param {string} url - The URL of the request  
+ * @returns {Object} Headers object
  */
 export const createCorsHeaders = (url = "") => {
-  // Default headers
+  // Only set Content-Type header - CORS headers are handled by the server
   const headers = {
     "Content-Type": "application/json",
   };
 
-  // For auth endpoints, omit CORS headers as they'll be handled by the server
-  if (url.includes("/api/auth/")) {
-    console.log("🔐 Using minimal headers for auth endpoint");
-    return headers;
-  }
-
-  // For other endpoints, add CORS headers
-  return {
-    ...headers,
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-  };
+  console.log(`� Using standard headers for: ${url}`);
+  return headers;
 };

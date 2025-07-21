@@ -51,17 +51,20 @@ app.use(
       const allowedOrigins = [
         "http://localhost:3000",
         "http://localhost:5173", // Vite dev server
-        "https://feedback-collection-1fzp.vercel.app", // Correct frontend URL
+        "https://feedback-collection-1fzp.vercel.app", // Main frontend URL
         process.env.CLIENT_URL,
       ].filter(Boolean);
 
       // For requests with no origin (like mobile apps or curl)
       if (!origin) return callback(null, true);
 
-      if (
-        allowedOrigins.indexOf(origin) !== -1 ||
-        origin.startsWith("http://localhost:")
-      ) {
+      // Check if origin matches allowed origins or patterns
+      const isAllowed = allowedOrigins.indexOf(origin) !== -1 ||
+        origin.startsWith("http://localhost:") ||
+        // Allow all Vercel preview URLs for the frontend project
+        origin.match(/^https:\/\/feedback-collection-1fzp-[a-z0-9]+-dhruv-tanejas-projects\.vercel\.app$/);
+
+      if (isAllowed) {
         callback(null, true);
       } else {
         console.log(`🚫 CORS rejected origin: ${origin}`);
