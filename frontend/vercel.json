@@ -13,13 +13,13 @@
   "installCommand": "npm install --legacy-peer-deps",
   "buildCommand": "npm run build",
   "env": {
-    "VITE_API_URL": "https://feedback-collection-t8g8-dhruv-tanejas-projects.vercel.app"
+    "VITE_API_URL": "https://feedback-collection-t8g8.vercel.app"
   },
   "routes": [
     {
       "src": "/api/auth/login",
       "methods": ["OPTIONS"],
-      "dest": "https://feedback-collection-t8g8-dhruv-tanejas-projects.vercel.app/api/auth/login",
+      "dest": "https://feedback-collection-t8g8.vercel.app/api/auth/login",
       "headers": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
@@ -30,7 +30,7 @@
     },
     {
       "src": "/api/(.*)",
-      "dest": "https://feedback-collection-t8g8-dhruv-tanejas-projects.vercel.app/api/$1",
+      "dest": "https://feedback-collection-t8g8.vercel.app/api/$1",
       "headers": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",

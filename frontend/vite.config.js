@@ -8,7 +8,7 @@ export default defineConfig(({ command, mode }) => {
 
   // Set the appropriate API URL based on environment
   const apiUrl = isProd
-    ? "https://feedback-collection-t8g8-dhruv-tanejas-projects.vercel.app"
+    ? "https://feedback-collection-t8g8.vercel.app"
     : "http://localhost:5000";
 
   console.log(`Using API URL: ${apiUrl} for mode: ${mode}`);
