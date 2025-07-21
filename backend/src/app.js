@@ -39,11 +39,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173", // Vite dev server
   "http://localhost:5000",
-  "https://feedback-collection-1fzp.vercel.app",
-  "https://feedback-collection-1fzp-fefhlkq7r-dhruv-tanejas-projects.vercel.app",
-  "https://feedback-collection-1fzp-3fvossmga-dhruv-tanejas-projects.vercel.app",
-  "https://feedback-collection-1fzp-nt4gdy9lu-dhruv-tanejas-projects.vercel.app",
-  "https://feedback-collection-1fzp-2idvvz3fc-dhruv-tanejas-projects.vercel.app",
+  "https://feedback-collection-1fzp.vercel.app", // Correct frontend URL
   process.env.CLIENT_URL,
 ].filter(Boolean); // Remove undefined values
 
@@ -54,8 +50,10 @@ app.use(
       // Allow specific origins instead of wildcard
       const allowedOrigins = [
         "http://localhost:3000",
-        "https://feedback-collection-1fzp-61jzczzm-dhruv-tanejas-projects.vercel.app",
-      ];
+        "http://localhost:5173", // Vite dev server
+        "https://feedback-collection-1fzp.vercel.app", // Correct frontend URL
+        process.env.CLIENT_URL,
+      ].filter(Boolean);
 
       // For requests with no origin (like mobile apps or curl)
       if (!origin) return callback(null, true);

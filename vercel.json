@@ -13,7 +13,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "https://your-backend-url.vercel.app/api/$1"
+      "dest": "https://feedback-collection-t8g8.vercel.app/api/$1"
     },
     {
       "src": "/assets/(.*)",

@@ -27,7 +27,7 @@
    ```
    MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/feedback-db
    JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters
-   CLIENT_URL=https://your-frontend-domain.vercel.app
+   CLIENT_URL=https://feedback-collection-1fzp.vercel.app
    NODE_ENV=production
    ```
 
@@ -39,7 +39,7 @@
    - Make sure to set them for "Production" environment
 
 3. **Deploy Backend**
-   - Note the deployed backend URL (e.g., `https://feedback-backend-xyz.vercel.app`)
+   - Note the deployed backend URL (e.g., `https://feedback-collection-t8g8.vercel.app`)
 
 #### 2. Deploy Frontend
 
@@ -55,7 +55,7 @@
    In the Vercel project settings, add:
 
    ```
-   VITE_API_URL=https://your-backend-domain.vercel.app
+   VITE_API_URL=https://feedback-collection-t8g8.vercel.app
    ```
 
    **Important:**
@@ -95,14 +95,14 @@
 ```bash
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/feedback-db
 JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters-long
-CLIENT_URL=https://your-frontend-domain.vercel.app
+CLIENT_URL=https://feedback-collection-1fzp.vercel.app
 NODE_ENV=production
 ```
 
 ### Frontend Environment Variables (Set in Frontend Project):
 
 ```bash
-VITE_API_URL=https://your-backend-domain.vercel.app
+VITE_API_URL=https://feedback-collection-t8g8.vercel.app
 ```
 
 ### Backend (.env)
@@ -111,21 +111,21 @@ VITE_API_URL=https://your-backend-domain.vercel.app
 NODE_ENV=production
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/feedback-db
 JWT_SECRET=your-super-secret-jwt-key-minimum-32-characters
-CLIENT_URL=https://your-frontend-domain.vercel.app
+CLIENT_URL=https://feedback-collection-1fzp.vercel.app
 PORT=5000
 ```
 
 ### Frontend (.env)
 
 ```bash
-VITE_API_URL=https://your-backend-domain.vercel.app
+VITE_API_URL=https://feedback-collection-t8g8.vercel.app
 ```
 
 ## Post-Deployment Steps
 
 1. **Test API endpoints:**
 
-   - `GET https://your-backend-domain.vercel.app/api/health`
+   - `GET https://feedback-collection-t8g8.vercel.app/api/health`
 
 2. **Test frontend:**
 
